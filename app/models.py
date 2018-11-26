@@ -5,12 +5,12 @@ from . import login_manager
 from datetime import datetime
 
 @login_manager.user_loader
-def load_user(user_id):
-    return User.query.get(int(user_id))
+def load_admin(admin_id):
+    return Admin.query.get(int(admin_id))
 
 class Admin (UserMixin, db.Model):
 
-    __tablename__ = 'admin'
+    __tablename__ = 'admins'
 
     id = db.Column(db.Integer,primary_key = True)
     username = db.Column(db.String(255))
@@ -54,10 +54,10 @@ class Post (db.Model):
     title = db.Column(db.String(255))
     content = db.Column(db.String(255))
     category = db.Column(db.String())
-    admin_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    admin_id = db.Column(db.Integer, db.ForeignKey('admins.id'))
     posted = db.Column(db.DateTime,default=datetime.utcnow)
     
-    comments = db.relationship('Comment', backref='pitch', lazy="dynamic")
+    comments = db.relationship('Comment', backref='post', lazy="dynamic")
 
     
     def save_post(self):
@@ -76,9 +76,9 @@ class Comment(db.Model):
     __tablename__ = 'comments'
 
     id = db.Column(db.Integer,primary_key = True)
-    post_id = db.Column(db.Integer,db.ForeignKey('post.id'))
+    post_id = db.Column(db.Integer,db.ForeignKey('posts.id'))
     comment=db.Column(db.String(255))
-    admin_id = db.Column(db.Integer,db.ForeignKey('users.id'))
+    admin_id = db.Column(db.Integer,db.ForeignKey('admins.id'))
     posted = db.Column(db.DateTime,default=datetime.utcnow)
 
     
