@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField,TextAreaField,SelectField,SubmitField
-from wtforms.validators import Required
+from wtforms.validators import Required,Email,EqualTo
 
 class CommentForm(FlaskForm):
     title = StringField('Comment title', validators = [Required()])
