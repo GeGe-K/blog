@@ -1,0 +1,31 @@
+<nav class="navbar navbar-expand-md navbar-light bg-light mb-3">
+    <div class="container">
+        <a href="/" class="navbar-brand" id="brand-name">The Resident</a>
+        <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#bar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="navbar-collapse collapse" id="bar">
+            <ul class="navbar-nav mx-auto">
+                <li class="nav-bar"><a href="/" class="nav-link">Home</a></li>
+                <li class="nav-bar"><a href="/" class="nav-link">Blog</a></li>
+                <li class="nav-bar"><a href="/" class="nav-link">About</a></li>
+                <!-- <li class="nav-item"><a href="/pitches/pick-up" class="nav-link">PickUp Lines</a></li>
+                <li class="nav-item"><a href="/pitches/interview" class="nav-link">Interview</a></li>
+                <li class="nav-item"><a href="/pitches/product" class="nav-link">Product</a></li>
+                <li class="nav-item"><a href="/pitches/promotion" class="nav-link">Promotion</a></li>
+                <li class="nav-item"><a href="/pitches/random" class="nav-link">Random</a></li>
+                <li class="nav-item"><a href="/pitches/funny" class="nav-link">Funny</a></li> -->
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                {% if current_user.is_authenticated %}
+                <li id="logged" class="nav-item"><a href="{{url_for('main.profile',uname=current_user.username)}}"
+                        class="nav-link">{{current_user.username | upper}}</a></li>
+                <li class="nav-item"><a href="{{url_for('auth.logout')}}" class="nav-link">Sign Out</a></li>
+                {% else %}
+                <li class="nav-item"><a href="{{url_for('auth.login')}}" class="nav-link">Sign In</a></li>
+                {%endif%}
+            </ul>
+        </div>
+    </div>
+</nav>
