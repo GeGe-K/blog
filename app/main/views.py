@@ -1,6 +1,6 @@
 from flask import render_template,request,redirect,url_for,abort
 from . import main
-from ..models import User, Post
+from ..models import User, Post, Comment
 import markdown2
 from .forms import CommentForm, UpdateProfile, AddPostForm, SubscribeForm
 from .. import db,photos
@@ -11,7 +11,7 @@ from flask_login import login_required,current_user
 @main.route('/')
 def index():
 
-    posts = Post.query.order_by(Blog.posted.desc()).all()
+    posts = Post.query.order_by(Post.posted.desc()).all()
     title = "Home"   
     return render_template("index.html", posts = posts, title = title)
 

@@ -10,7 +10,7 @@ def load_user(user_id):
 
 class User (UserMixin, db.Model):
 
-    __tablename__ = 'Users'
+    __tablename__ = 'users'
 
     id = db.Column(db.Integer,primary_key = True)
     full_name = db.Column(db.String(255))
@@ -46,9 +46,9 @@ class Post (db.Model):
     id = db.Column(db.Integer,primary_key = True)
     title = db.Column(db.String(255))
     content = db.Column(db.String(255))
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    # user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    pic_path = db.Column(db.String())
     posted = db.Column(db.DateTime,default=datetime.utcnow)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     comments = db.relationship('Comment', backref='post', lazy="dynamic")
 
     
@@ -70,11 +70,12 @@ class Comment(db.Model):
 
     id = db.Column(db.Integer,primary_key = True)
     post_id = db.Column(db.Integer,db.ForeignKey('posts.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     name = db.Column(db.String)
     title = db.Column(db.String)
     comment=db.Column(db.String)
     posted = db.Column(db.DateTime,default=datetime.utcnow)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+
 
     
     def save_comment(self):
