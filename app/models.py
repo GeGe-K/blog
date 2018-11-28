@@ -19,8 +19,8 @@ class User (UserMixin, db.Model):
     bio = db.Column(db.String(255))
     profile_pic_path = db.Column(db.String())
     password_hash = db.Column(db.String(255))
-    posts = db.relationship("Post", backref = "admin", lazy = "dynamic")
-    comments = db.relationship('Comment', backref="admin", lazy = "dynamic")
+    posts = db.relationship("Post", backref = "user", lazy = "dynamic")
+    comments = db.relationship('Comment', backref="user", lazy = "dynamic")
 
     def save_user(self):
 
@@ -39,8 +39,6 @@ class User (UserMixin, db.Model):
         return check_password_hash(self.password_hash,password)  
 
 
-
-
 class Post (db.Model):
 
     __tablename__ = 'posts'
@@ -48,10 +46,9 @@ class Post (db.Model):
     id = db.Column(db.Integer,primary_key = True)
     title = db.Column(db.String(255))
     content = db.Column(db.String(255))
-    category = db.Column(db.String())
-    admin_id = db.Column(db.Integer, db.ForeignKey('admins.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    # user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     posted = db.Column(db.DateTime,default=datetime.utcnow)
-    
     comments = db.relationship('Comment', backref='post', lazy="dynamic")
 
     
@@ -65,6 +62,7 @@ class Post (db.Model):
         post = Post.query.filter_by(id = self.id).first()
         comments = Comment.query.filter_by(post_id = post.id).order_by(Comment.posted.desc())
         return comments
+        
 
 class Comment(db.Model):
 
@@ -72,9 +70,11 @@ class Comment(db.Model):
 
     id = db.Column(db.Integer,primary_key = True)
     post_id = db.Column(db.Integer,db.ForeignKey('posts.id'))
-    comment=db.Column(db.String(255))
-    admin_id = db.Column(db.Integer,db.ForeignKey('admins.id'))
+    name = db.Column(db.String)
+    title = db.Column(db.String)
+    comment=db.Column(db.String)
     posted = db.Column(db.DateTime,default=datetime.utcnow)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
     
     def save_comment(self):
@@ -83,11 +83,15 @@ class Comment(db.Model):
         db.session.commit()
     
 
-
 class Subscriber(db.Model):
     __tablename__ = 'subscribers'
     id = db.Column(db.Integer,primary_key = True)
-    name = db.Column(db.String(20))
-    email = db.Column(db.String(), unique = True)
+    name = db.Column(db.String(30))
+    email = db.Column(db.String, unique = True)
+
+
+    def save_subscriber(self):
+        db.session.add(self)
+        db.session.commit()
 
     

@@ -4,7 +4,8 @@ from wtforms.validators import Required,Email,EqualTo
 
 class CommentForm(FlaskForm):
     title = StringField('Comment title', validators = [Required()])
-    comment = TextAreaField('comment')
+    comment = TextAreaField('Comment')
+    name = StringField('Name', validators= [Required()])
     submit = SubmitField('Submit')
 
 class UpdateProfile(FlaskForm):
@@ -17,6 +18,7 @@ class AddPostForm(FlaskForm):
    
     submit = SubmitField('Submit')
 
-class Subscribe(FlaskForm):
+class SubscribeForm(FlaskForm):
+    name = StringField('Enter your name', validators=[Required])
     email = StringField('Your Email Address',validators=[Required(),Email()])
     submit = SubmitField('Submit')
