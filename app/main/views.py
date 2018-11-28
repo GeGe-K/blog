@@ -1,6 +1,6 @@
 from flask import render_template,request,redirect,url_for,abort
 from . import main
-from ..models import Admin, Post, Comment
+from ..models import User, Post, Comment
 import markdown2
 from .forms import CommentForm, UpdateProfile, AddPostForm, Subscribe
 from .. import db,photos

@@ -5,14 +5,15 @@ from . import login_manager
 from datetime import datetime
 
 @login_manager.user_loader
-def load_admin(admin_id):
-    return Admin.query.get(int(admin_id))
+def load_user(user_id):
+    return User.query.get(int(user_id))
 
-class Admin (UserMixin, db.Model):
+class User (UserMixin, db.Model):
 
-    __tablename__ = 'admins'
+    __tablename__ = 'Users'
 
     id = db.Column(db.Integer,primary_key = True)
+    full_name = db.Column(db.String(255))
     username = db.Column(db.String(255))
     email = db.Column(db.String(255),unique = True, index = True)
     bio = db.Column(db.String(255))
@@ -21,7 +22,7 @@ class Admin (UserMixin, db.Model):
     posts = db.relationship("Post", backref = "admin", lazy = "dynamic")
     comments = db.relationship('Comment', backref="admin", lazy = "dynamic")
 
-    def save_admin(self):
+    def save_user(self):
 
         db.session.add(self)
         db.session.commit()
@@ -37,13 +38,7 @@ class Admin (UserMixin, db.Model):
     def verify_password(self, password):
         return check_password_hash(self.password_hash,password)  
 
-    def get_admin_posts(self):
-        admin = Admin.query.filter_by(id = self.id).first()
-        return admin.posts
-    
-    def get_admin_comments(self):
-        admin   = Admin.query.filter_by(id = self.id).first()
-        return admin.comments
+
 
 
 class Post (db.Model):
@@ -86,6 +81,8 @@ class Comment(db.Model):
 
         db.session.add(self)
         db.session.commit()
+    
+
 
 class Subscriber(db.Model):
     __tablename__ = 'subscribers'
