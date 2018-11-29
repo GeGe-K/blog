@@ -14,8 +14,8 @@ class UpdateProfile(FlaskForm):
 
 class AddPostForm(FlaskForm):
     title = StringField("Post Title", validators = [Required()])
-    pitch = TextAreaField("Post", validators = [Required()])
-   
+    content = TextAreaField("Post", validators = [Required()])
+    photo = FileField('Select an image', validators=[Required()])
     submit = SubmitField('Submit')
 
 class SubscribeForm(FlaskForm):
